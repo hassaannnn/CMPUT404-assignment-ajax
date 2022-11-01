@@ -22,7 +22,7 @@
 
 
 import flask
-from flask import Flask, request, send_from_directory
+from flask import Flask, request, redirect
 import json
 app = Flask(__name__)
 app.debug = True
@@ -74,10 +74,7 @@ def flask_post_json():
 @app.route("/")
 def hello():
     '''Return something coherent here.. perhaps redirect to /static/index.html '''
-    return send_from_directory('static', 'index.html')
-@app.route("/static/<filename>")
-def static_files(filename):
-    return send_from_directory('static', filename)
+    return redirect("/static/index.html", code=302)
 
 @app.route("/entity/<entity>", methods=['POST','PUT'])
 def update(entity):
@@ -102,7 +99,7 @@ def clear():
     '''Clear the world out!'''
     currentState = myWorld.world()
     myWorld.clear()
-    return currentState
+    return myWorld.world()
 
 if __name__ == "__main__":
     app.run()
